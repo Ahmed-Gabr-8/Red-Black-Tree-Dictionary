@@ -24,6 +24,7 @@ public class TreeGraph extends JPanel {
         super();
         nodes = new LinkedList<>();
         edges = new LinkedList<>();
+        this.setOpaque(true);
     
     }
     

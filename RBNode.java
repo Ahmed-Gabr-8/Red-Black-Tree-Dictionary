@@ -94,6 +94,11 @@ class RBNode {
    
     }
 
+    public RBNode getParent()
+    {
+        return this.parent;
+    }
+    
     public Point getGraphPoint() {
         return graphPoint;
     }
