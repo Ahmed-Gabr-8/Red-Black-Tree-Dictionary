@@ -12,6 +12,13 @@ public class RedBlackTreeDictionary {
         System.out.println(n.toString());
         n.changeColor();
         System.out.println(n.toString());
+        
+        System.out.println("----------->");
+        
+        tree.insertNode(20);
+        tree.insertNode(70);
+        System.out.println(tree.getRoot().toString());
+        
     }
     
 }
