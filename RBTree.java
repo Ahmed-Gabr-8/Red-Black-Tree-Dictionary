@@ -18,10 +18,15 @@ public class RBTree {
             if (newNode.getKey() > currentParent.getKey()) {
                 prevParent = currentParent;
                 currentParent = currentParent.getRight();
-            } else {
+            } else if (newNode.getKey() < currentParent.getKey()) {
                 prevParent = currentParent;
                 currentParent = currentParent.getLeft();
 
+            }
+            
+            else{
+                System.out.println("Repeated Number");
+            
             }
 
         }
