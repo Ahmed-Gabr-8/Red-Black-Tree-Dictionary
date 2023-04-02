@@ -11,50 +11,54 @@ public class RBTree {
         root.makeBlack();
     }
 
-    
-    public void leftRotate(RBNode n)
-    {
+    public void leftRotate(RBNode n) {
         RBNode rightChild = n.getRight();
-        if(rightChild.isNIL())
-            return ;
+        if (rightChild.isNIL()) {
+            return;
+        }
         n.setRight(rightChild.getLeft());
-        
-        if(rightChild.getLeft().isNIL() == false)
+
+        if (rightChild.getLeft().isNIL() == false) {
             rightChild.getLeft().setParent(n);
+        }
         rightChild.setParent(n.getParent());
-        
-        if(n == root)
+
+        if (n == root) {
             root = rightChild;
-        else if(n.getParent().getLeft() == n)
+        } else if (n.getParent().getLeft() == n) {
             n.getParent().setLeft(rightChild);
-        else
+        } else {
             n.getParent().setRight(rightChild);
-        
+        }
+
         rightChild.setLeft(n);
         n.setParent(rightChild);
     }
-    
-    public void rightRotate(RBNode n)
-    {
+
+    public void rightRotate(RBNode n) {
         RBNode leftChild = n.getLeft();
-        if(leftChild.isNIL())
-            return ;
+        if (leftChild.isNIL()) {
+            return;
+        }
         n.setLeft(leftChild.getRight());
-        
-        if(leftChild.getRight().isNIL() == false)
+
+        if (leftChild.getRight().isNIL() == false) {
             leftChild.getRight().setParent(n);
+        }
         leftChild.setParent(n.getParent());
-        
-        if(n == root)
+
+        if (n == root) {
             root = leftChild;
-        else if(n.getParent().getLeft() == n)
+        } else if (n.getParent().getLeft() == n) {
             n.getParent().setLeft(leftChild);
-        else
+        } else {
             n.getParent().setRight(leftChild);
-        
+        }
+
         leftChild.setRight(n);
         n.setParent(leftChild);
     }
+<<<<<<< HEAD
     
     public void insertFixUp(RBNode newNode)
     {
@@ -140,6 +144,9 @@ public class RBTree {
         
     }
     
+=======
+
+>>>>>>> e97c278c19e4a7bcdcfc0b6e002c6ae07bdca506
     public void insert(int key) {
         RBNode newNode = new RBNode(key);
         RBNode prevParent = this.root;
@@ -153,43 +160,78 @@ public class RBTree {
                 prevParent = currentParent;
                 currentParent = currentParent.getLeft();
 
-            }
-            
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "ERROR: Word already in the dictionary!");
-                return ;
-            
+                return;
+
             }
 
         }
-        
-        if(newNode.getKey() > prevParent.getKey()){
+
+        if (newNode.getKey() > prevParent.getKey()) {
             prevParent.setRight(newNode);
-        }
-        
-        else {
+        } else {
             prevParent.setLeft(newNode);
         }
-        
+
         newNode.setParent(prevParent);
         insertFixUp(newNode);
         System.out.println("key = " + key);
     }
 
+    public void search (int target, RBNode n)
+    {
+        if ( n != null) {
+            if (target == n.getKey()) {
+                JOptionPane.showMessageDialog(null,"Found");
+                return;
+            }
+            else if (target < n.getKey()) {
+                n = n.getLeft();
+                search(target, n);
+            }
+            else {
+                    n = n.getRight();
+                    search(target, n);
+                }
+        }
+
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Not Found");
+        }
+    }
+
     public RBNode getRoot() {
         return root;
     }
-    
-    public void display(){
+
+    public void display() {
         TreeGraph graph = new TreeGraph();
         this.root.addToGraph(graph, 0);
         TreeGraph.showTree(graph);
-        try{
-        Thread.sleep(5000);
-        }
-        catch(InterruptedException e){
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
             System.out.println("Interruped Exception occured.");
         }
-    }          
+    }
 
-}
+    public int getCount() {
+        if (this.root == null) {
+            return 0;
+        }
+        return this.root.getNodeCount();
+
+    }
+    
+    
+    public int getHeight(){
+        if(this.root == null){
+            return -1;
+        }
+        
+        return this.root.getNodeHeight();
+    }
+    
+    }
