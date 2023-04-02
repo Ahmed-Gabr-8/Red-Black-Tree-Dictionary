@@ -58,7 +58,6 @@ public class RBTree {
         leftChild.setRight(n);
         n.setParent(leftChild);
     }
-<<<<<<< HEAD
     
     public void insertFixUp(RBNode newNode)
     {
@@ -144,9 +143,6 @@ public class RBTree {
         
     }
     
-=======
-
->>>>>>> e97c278c19e4a7bcdcfc0b6e002c6ae07bdca506
     public void insert(int key) {
         RBNode newNode = new RBNode(key);
         RBNode prevParent = this.root;
