@@ -94,7 +94,7 @@ public class RBTree {
     {
         if ( n != null) {
             if (target == n.getKey()) {
-                System.out.println("Found");
+                JOptionPane.showMessageDialog(null,"Found");
                 return;
             }
             else if (target < n.getKey()) {
@@ -109,7 +109,7 @@ public class RBTree {
 
         else
         {
-            System.out.println("Not Found");
+            JOptionPane.showMessageDialog(null,"Not Found");
         }
     }
 
