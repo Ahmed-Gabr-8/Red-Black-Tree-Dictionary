@@ -15,8 +15,8 @@ public class TreeGraph extends JPanel {
 
     public static final int NODE_SIZE = 50;
     public static final int EDGE_THICKNESS = 1;
-    public static final int WINDOW_WIDTH = 300;
-    public static final int WINDOW_HEIGHT = 250;
+    public static final int WINDOW_WIDTH = 800;
+    public static final int WINDOW_HEIGHT = 600;
     private LinkedList<RBNode> nodes;
     private LinkedList<Edge> edges;
 

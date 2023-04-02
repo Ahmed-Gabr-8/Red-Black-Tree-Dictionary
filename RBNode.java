@@ -2,8 +2,8 @@ package red.black.tree.dictionary;
 
 import java.awt.Point;
 
-
 class RBNode {
+
     private static RBNode NIL = null;
     private int key;
     private boolean red;
@@ -11,28 +11,27 @@ class RBNode {
     private RBNode right;
     private RBNode parent;
     private Point graphPoint;
-    
-    private static void createNIL(){
-    
+
+    private static void createNIL() {
+
         NIL = new RBNode();
         NIL.makeBlack();
-    
+
     }
-    
-    private static RBNode getNil(){
-        if (NIL == null){
+
+    private static RBNode getNil() {
+        if (NIL == null) {
             createNIL();
         }
-        
+
         return NIL;
     }
-    
-    private RBNode(){
-    
-    
+
+    private RBNode() {
+
     }
-    
-    public RBNode(int key){
+
+    public RBNode(int key) {
         this.key = key;
         this.red = true;
         this.left = getNil();
@@ -50,20 +49,20 @@ class RBNode {
     public boolean isRed() {
         return red;
     }
-    
+
     public boolean isBlack() {
         return !red;
     }
-    
-    public void switchColor(){
+
+    public void switchColor() {
         this.red = !this.red;
-    
+
     }
 
-    public void makeRed(){
+    public void makeRed() {
         this.red = true;
     }
-    
+
     public void makeBlack() {
         this.red = false;
     }
@@ -83,22 +82,44 @@ class RBNode {
     public void setRight(RBNode right) {
         this.right = right;
     }
-    
-    public boolean isNIL(){
+
+    public boolean isNIL() {
         return this == getNil();
-    
-    }
-    
-    public void setParent(RBNode parent){
-        this.parent = parent;
-   
+
     }
 
-    public RBNode getParent()
-    {
+    public void setParent(RBNode parent) {
+        this.parent = parent;
+
+    }
+
+    public RBNode getParent() {
         return this.parent;
     }
-    
+
+    public RBNode getSibling() {
+
+        if (this.isNIL() || this.parent == null) {
+            return RBNode.getNil();
+        }
+
+        if (this == this.parent.left) {
+
+            return this.parent.right;
+        } else {
+            return this.parent.left;
+        }
+
+    }
+
+    public RBNode getUncle() {
+        if (this.isNIL() || this.parent == null) {
+            return RBNode.getNil();
+        }
+        
+        return this.parent.getSibling();
+    }
+
     public Point getGraphPoint() {
         return graphPoint;
     }
@@ -106,21 +127,19 @@ class RBNode {
     public void setGraphPoint(Point graphPoint) {
         this.graphPoint = graphPoint;
     }
-    
-    
-    public void addToGraph(TreeGraph graph, int upperHeight){
-        if(this.isNIL()){
-            return ;               
+
+    public void addToGraph(TreeGraph graph, int upperHeight) {
+        if (this.isNIL()) {
+            return;
         }
-        
-        this.left.addToGraph(graph, upperHeight+1);
+
+        this.left.addToGraph(graph, upperHeight + 1);
         graph.addNode(this, upperHeight);
-        this.right.addToGraph(graph, upperHeight+1);
-        
+        this.right.addToGraph(graph, upperHeight + 1);
+
         graph.addEdge(this, this.right);
         graph.addEdge(this, this.left);
-    
-    
+
     }
-    
+
 }
