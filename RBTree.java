@@ -56,6 +56,90 @@ public class RBTree {
         n.setParent(leftChild);
     }
     
+    public void insertFixUp(RBNode newNode)
+    {
+        if(newNode == root)
+            return;
+        
+        RBNode parent = newNode.getParent();
+        RBNode grandParent = parent.getParent();
+        RBNode uncle;
+
+        if(parent.isRed())
+        {
+            
+            
+            if(grandParent.getLeft() == parent)
+                uncle = grandParent.getRight();
+            else
+                uncle = grandParent.getLeft();
+            
+            if(uncle.isRed())
+            {
+                uncle.switchColor();
+                parent.switchColor();
+                if(grandParent != root)
+                    grandParent.switchColor();
+                else
+                    grandParent.makeBlack();
+                //this.display();
+                System.out.println("Case 1: Uncle Red.");
+                insertFixUp(grandParent);
+                
+            }
+            else
+            {
+                
+                //right left.
+                if(grandParent.getRight().getLeft() == newNode){
+                    this.rightRotate(parent);
+                    insertFixUp(parent);
+//                    this.leftRotate(grandParent);
+//                    grandParent.switchColor();
+//                    parent.switchColor();
+                    System.out.println("Case 2: right left");
+                    // also instead of leftRotate we could call insertFixUp(parent);
+                }
+                //right right.
+                else if(grandParent.getRight().getRight() == newNode){
+                    this.leftRotate(grandParent);
+                    grandParent.switchColor();
+                    parent.switchColor();
+                    
+                    System.out.println("Case 3: right right.");
+                    //check for root and color it.
+                }
+                
+                
+                    
+                //left right
+                else if(grandParent.getLeft().getRight() == newNode){
+                        this.leftRotate(parent);
+                        insertFixUp(parent);
+//                        this.rightRotate(grandParent);
+//                        grandParent.switchColor();
+//                        parent.switchColor();
+                        System.out.println("Case 2: left right.");
+                }
+                    
+                //left left    
+                else{
+                    this.rightRotate(grandParent);
+                    grandParent.switchColor();
+                    parent.switchColor();
+                    
+                    System.out.println("Case 3: left left.");
+                }
+                
+                }
+                
+                
+            }
+        
+        
+        
+    }
+    
     public void insert(int key) {
         RBNode newNode = new RBNode(key);
         RBNode prevParent = this.root;
@@ -88,7 +172,8 @@ public class RBTree {
         }
         
         newNode.setParent(prevParent);
-
+        insertFixUp(newNode);
+        System.out.println("key = " + key);
     }
 
     public RBNode getRoot() {
