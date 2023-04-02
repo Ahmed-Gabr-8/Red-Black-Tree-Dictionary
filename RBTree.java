@@ -91,6 +91,29 @@ public class RBTree {
 
     }
 
+    public void search (int target, RBNode n)
+    {
+        if ( n != null) {
+            if (target == n.getKey()) {
+                System.out.println("Found");
+                return;
+            }
+            else if (target < n.getKey()) {
+                n = n.getLeft();
+                search(target, n);
+            }
+            else {
+                    n = n.getRight();
+                    search(target, n);
+                }
+        }
+
+        else
+        {
+            System.out.println("Not Found");
+        }
+    }
+
     public RBNode getRoot() {
         return root;
     }
