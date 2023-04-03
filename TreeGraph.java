@@ -7,36 +7,39 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Line2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class TreeGraph extends JPanel {
+public class TreeGraph extends JPanel implements KeyListener {
 
-    public static final int NODE_SIZE = 50;
-    public static final int EDGE_THICKNESS = 1;
     public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = 600;
     private LinkedList<RBNode> nodes;
     private LinkedList<Edge> edges;
+    private int nodeSize = 50;
+    private int edgeThickness = 1;
+    private Point offset;
 
     public TreeGraph() {
         super();
         nodes = new LinkedList<>();
         edges = new LinkedList<>();
-        this.setOpaque(true);
-    
+        offset = new Point(0, 0);
+
     }
-    
+
     public void addNode(RBNode node, int upperHeight) {
         if (node.isNIL()) {
 
             return;
         }
         nodes.add(node);
-        int x = (nodes.size() - 1) * NODE_SIZE;
-        int y = upperHeight * NODE_SIZE * 2;
-        node.setGraphPoint(new Point(x, y));
+        int x = (nodes.size() - 1);
+        int y = upperHeight * 2;
+        node.setGraphIndex(new Point(x, y), nodeSize, offset);
 
     }
 
@@ -44,10 +47,9 @@ public class TreeGraph extends JPanel {
         if (child.isNIL()) {
             return;
         }
-        Point parentPoint = new Point(parent.getGraphPoint().x+NODE_SIZE/2, parent.getGraphPoint().y+NODE_SIZE/2);
-        Point childPoint = new Point(child.getGraphPoint().x+NODE_SIZE/2, child.getGraphPoint().y+NODE_SIZE/2);
-        edges.add(new Edge(parentPoint, childPoint));
-        
+
+        edges.add(new Edge(parent, child));
+
     }
 
     @Override
@@ -56,24 +58,23 @@ public class TreeGraph extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.BLUE);
-        g2d.setStroke(new BasicStroke(EDGE_THICKNESS));
+        g2d.setStroke(new BasicStroke(edgeThickness));
         for (Edge e : edges) {
             g2d.draw(e.getLine());
         }
-        
-        
+
         for (RBNode n : nodes) {
             if (n.isRed()) {
                 g2d.setColor(Color.RED);
             } else {
                 g2d.setColor(Color.BLACK);
             }
-            
-            g.fillOval(n.getGraphPoint().x, n.getGraphPoint().y, NODE_SIZE, NODE_SIZE);
+
+            g.fillOval(n.getGraphPoint().x, n.getGraphPoint().y, nodeSize, nodeSize);
             g.setColor(Color.WHITE);
             String nodeText = String.valueOf(n.getKey());
             Point textPosition = this.getTextCoordinates(nodeText, n.getGraphPoint());
-            g.setFont(new Font("Arial", Font.BOLD, this.getTextSize(nodeText))); 
+            g.setFont(new Font("Arial", Font.BOLD, this.getTextSize(nodeText)));
             g.drawString(nodeText, textPosition.x, textPosition.y);
 
         }
@@ -81,36 +82,93 @@ public class TreeGraph extends JPanel {
     }
 
     public static void showTree(TreeGraph treeGraph) {
+
+        treeGraph.addKeyListener(treeGraph);
+        treeGraph.setFocusable(true);
         JFrame frame = new JFrame("Tree Graph");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(treeGraph);
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setVisible(true);
+
     }
 
-    private static Point getTextCoordinates(String text, Point nodePosition) {
-        return new Point(nodePosition.x + NODE_SIZE / 3, nodePosition.y + 3 * NODE_SIZE / 4);
+    private Point getTextCoordinates(String text, Point nodePosition) {
+        return new Point(nodePosition.x + nodeSize / 3, nodePosition.y + 3 * nodeSize / 4);
     }
 
-    private static int getTextSize(String text) {
-        return NODE_SIZE / 2;
+    private int getTextSize(String text) {
+        return nodeSize / 2;
 
     }
 
     class Edge {
 
-        private Point point1;
-        private Point point2;
+        private RBNode node1;
+        private RBNode node2;
 
-        public Edge(Point point1, Point point2) {
-            this.point1 = point1;
-            this.point2 = point2;
+        public Edge(RBNode node1, RBNode node2) {
+            this.node1 = node1;
+            this.node2 = node2;
         }
 
         public Line2D getLine() {
-            return new Line2D.Double(point1.x, point1.y, point2.x, point2.y);
+            return new Line2D.Double(node1.getGraphPoint().x + nodeSize / 2, node1.getGraphPoint().y + nodeSize / 2, node2.getGraphPoint().x + nodeSize / 2, node2.getGraphPoint().y + nodeSize / 2);
+        }
+    }
+
+    public void updateGraph() {
+        for (RBNode n : nodes) {
+            n.updateGraphPoint(nodeSize, offset);
 
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();        
+        int translateSpeed = nodeSize/2;
+        switch (keyCode) {
+            case KeyEvent.VK_UP:
+                this.offset.translate(0, -translateSpeed);
+                this.updateGraph();
+                break;
+            case KeyEvent.VK_DOWN:
+                this.offset.translate(0, translateSpeed);
+                this.updateGraph();
+                break;
+            case KeyEvent.VK_LEFT:
+                this.offset.translate(-translateSpeed, 0);
+                this.updateGraph();
+                break;
+            case KeyEvent.VK_RIGHT:
+                this.offset.translate(translateSpeed, 0);
+                this.updateGraph();
+                break;                
+            case 61:
+                this.nodeSize +=1;
+                this.updateGraph();
+                break;
+            case KeyEvent.VK_MINUS:
+                this.nodeSize -=1;
+                this.updateGraph();                
+                break;
+             
+        }
+        
+        
+
+        this.repaint();
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 
 }

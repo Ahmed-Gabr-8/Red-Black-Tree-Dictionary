@@ -11,7 +11,7 @@ class RBNode {
     private RBNode right;
     private RBNode parent;
     private Point graphPoint;
-
+    private Point graphIndex;
     private static void createNIL() {
 
         NIL = new RBNode();
@@ -124,9 +124,18 @@ class RBNode {
         return graphPoint;
     }
 
-    public void setGraphPoint(Point graphPoint) {
-        this.graphPoint = graphPoint;
+    public void setGraphIndex(Point graphIndex, int nodeSize, Point offset) {
+        this.graphIndex = graphIndex;      
+        this.updateGraphPoint(nodeSize, offset);
     }
+    
+    
+    public void updateGraphPoint(int nodeSize, Point offset){
+        this.graphPoint = new Point(graphIndex.x*nodeSize+offset.x, graphIndex.y*nodeSize + offset.y);
+    
+    }
+
+    
 
     public void addToGraph(TreeGraph graph, int upperHeight) {
         if (this.isNIL()) {
