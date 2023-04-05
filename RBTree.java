@@ -5,6 +5,10 @@ import javax.swing.JOptionPane;
 public class RBTree {
 
     private RBNode root;
+    
+    public RBTree(){
+        this.root = RBNode.getNil();        
+    }
 
     public RBTree(String root_key) {
         this.root = new RBNode(root_key);
@@ -149,6 +153,14 @@ public class RBTree {
         RBNode newNode = new RBNode(key);
         RBNode prevParent = this.root;
         RBNode currentParent = this.root;
+        
+        if(prevParent.isNIL()){
+            this.root = newNode;
+            newNode.setParent(RBNode.getNil());
+            newNode.makeBlack();
+            return;
+        }
+        
 
         while (!currentParent.isNIL()) {
             if (newNode.getKey().compareToIgnoreCase(currentParent.getKey()) > 0) {

@@ -15,8 +15,8 @@ public class RedBlackTreeDictionary {
 //        tree.insert("95");
 //        tree.insert("97");
 
-        RBTree tree =  new RBTree("Ali");
-        
+        RBTree tree =  new RBTree();
+        tree.insert("Ali");
         tree.insert("Ahmed");
         tree.insert("Gabor");
         tree.insert("Nour");
