@@ -113,7 +113,7 @@ public class RBTree {
                     grandParent.makeBlack();
                 }
                 //this.display();
-                System.out.println("Case 1: Uncle Red.");
+                //System.out.println("Case 1: Uncle Red.");
                 insertFixUp(grandParent);
 
             } else {
@@ -125,7 +125,7 @@ public class RBTree {
 //                    this.leftRotate(grandParent);
 //                    grandParent.switchColor();
 //                    parent.switchColor();
-                    System.out.println("Case 2: right left");
+                    //System.out.println("Case 2: right left");
                     // also instead of leftRotate we could call insertFixUp(parent);
                 } //right right.
                 else if (grandParent.getRight().getRight() == newNode) {
@@ -133,7 +133,7 @@ public class RBTree {
                     grandParent.switchColor();
                     parent.switchColor();
 
-                    System.out.println("Case 3: right right.");
+                    //System.out.println("Case 3: right right.");
                     //check for root and color it.
                 } //left right
                 else if (grandParent.getLeft().getRight() == newNode) {
@@ -142,14 +142,14 @@ public class RBTree {
 //                        this.rightRotate(grandParent);
 //                        grandParent.switchColor();
 //                        parent.switchColor();
-                    System.out.println("Case 2: left right.");
+                    //System.out.println("Case 2: left right.");
                 } //left left    
                 else {
                     this.rightRotate(grandParent);
                     grandParent.switchColor();
                     parent.switchColor();
 
-                    System.out.println("Case 3: left left.");
+                    //System.out.println("Case 3: left left.");
                 }
 
             }
@@ -202,7 +202,7 @@ public class RBTree {
 
         newNode.setParent(prevParent);
         insertFixUp(newNode);
-        System.out.println("key = " + key);
+        //System.out.println("key = " + key);
     }
 
     public void search(String target, RBNode n) {
@@ -228,7 +228,7 @@ public class RBTree {
     }
 
     public void display() {
-        TreeGraph graph = new TreeGraph();
+        TreeGraph graph = new TreeGraph(this.getCount(), this.getHeight());
         this.root.addToGraph(graph, 0);
         TreeGraph.showTree(graph);
         try {

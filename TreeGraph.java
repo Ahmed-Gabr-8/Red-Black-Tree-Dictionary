@@ -32,6 +32,12 @@ public class TreeGraph extends JPanel implements KeyListener {
 
     }
 
+    public TreeGraph(int nodeCount, int treeHeight) {
+        this();
+        this.nodeSize = Math.max(1, Math.min(WINDOW_WIDTH / nodeCount, WINDOW_HEIGHT / (2 * (treeHeight + 1))));
+
+    }
+
     public void addNode(RBNode node, int upperHeight) {
         if (node.isNIL()) {
 
@@ -93,6 +99,7 @@ public class TreeGraph extends JPanel implements KeyListener {
         frame.add(treeGraph);
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setVisible(true);
+        frame.setResizable(false);
 
     }
 
@@ -138,29 +145,38 @@ public class TreeGraph extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         int translateSpeed = nodeSize;
+        int scaleSpeed = 2;
         switch (keyCode) {
             case KeyEvent.VK_UP -> {
-                this.offset.translate(0, -translateSpeed);
-                this.updateGraph();
-            }
-            case KeyEvent.VK_DOWN -> {
                 this.offset.translate(0, translateSpeed);
                 this.updateGraph();
             }
-            case KeyEvent.VK_LEFT -> {
-                this.offset.translate(-translateSpeed, 0);
+            case KeyEvent.VK_DOWN -> {
+                this.offset.translate(0, -translateSpeed);
                 this.updateGraph();
             }
-            case KeyEvent.VK_RIGHT -> {
+            case KeyEvent.VK_LEFT -> {
                 this.offset.translate(translateSpeed, 0);
                 this.updateGraph();
             }
-            case KeyEvent.VK_0 -> {
-                this.nodeSize += 1;
+            case KeyEvent.VK_RIGHT -> {
+                this.offset.translate(-translateSpeed, 0);
+                this.updateGraph();
+            }
+            case KeyEvent.VK_0 -> {               
+                double scaleKeyX = ((1.0 / nodeSize) * (WINDOW_WIDTH / 2 - nodeSize / 2 - offset.x) + 0.5) * scaleSpeed;
+                double scaleKeyY = ((1.0 / nodeSize) * (WINDOW_HEIGHT / 2 - nodeSize / 2 - offset.y) + 0.5) * scaleSpeed;
+                this.offset.translate((int) -scaleKeyX, (int) -scaleKeyY);
+                this.nodeSize += scaleSpeed;
                 this.updateGraph();
             }
             case KeyEvent.VK_MINUS -> {
-                this.nodeSize = Math.max(this.nodeSize - 1, 0);
+                if(nodeSize == 1)
+                    return;
+                double scaleKeyX = ((1.0 / nodeSize) * (WINDOW_WIDTH / 2 - nodeSize / 2 - offset.x) + 0.5) * scaleSpeed;
+                double scaleKeyY = ((1.0 / nodeSize) * (WINDOW_HEIGHT / 2 - nodeSize / 2 - offset.y) + 0.5) * scaleSpeed;
+                this.offset.translate((int) scaleKeyX, (int) scaleKeyY);
+                this.nodeSize = this.nodeSize - scaleSpeed;
                 this.updateGraph();
             }
 
