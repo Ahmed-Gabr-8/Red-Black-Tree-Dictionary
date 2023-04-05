@@ -6,8 +6,10 @@ public class RBTree {
 
     private RBNode root;
 
-    public RBTree(int root_key) {
+    public RBTree(String root_key) {
         this.root = new RBNode(root_key);
+        //to make the root's parent NIL.
+        this.root.setParent(RBNode.getNil());
         root.makeBlack();
     }
 
@@ -143,16 +145,16 @@ public class RBTree {
         
     }
     
-    public void insert(int key) {
+    public void insert(String key) {
         RBNode newNode = new RBNode(key);
         RBNode prevParent = this.root;
         RBNode currentParent = this.root;
 
         while (!currentParent.isNIL()) {
-            if (newNode.getKey() > currentParent.getKey()) {
+            if (newNode.getKey().compareToIgnoreCase(currentParent.getKey()) > 0) {
                 prevParent = currentParent;
                 currentParent = currentParent.getRight();
-            } else if (newNode.getKey() < currentParent.getKey()) {
+            } else if (newNode.getKey().compareToIgnoreCase(currentParent.getKey()) < 0) {
                 prevParent = currentParent;
                 currentParent = currentParent.getLeft();
 
@@ -164,7 +166,7 @@ public class RBTree {
 
         }
 
-        if (newNode.getKey() > prevParent.getKey()) {
+        if (newNode.getKey().compareToIgnoreCase(prevParent.getKey()) > 0) {
             prevParent.setRight(newNode);
         } else {
             prevParent.setLeft(newNode);
@@ -175,14 +177,14 @@ public class RBTree {
         System.out.println("key = " + key);
     }
 
-    public void search (int target, RBNode n)
+    public void search (String target, RBNode n)
     {
-        if ( n != null) {
-            if (target == n.getKey()) {
+        if ( n.getKey() != null) {
+            if (target.equalsIgnoreCase(n.getKey())) {
                 JOptionPane.showMessageDialog(null,"Found");
                 return;
             }
-            else if (target < n.getKey()) {
+            else if (target.compareToIgnoreCase(n.getKey()) < 0) {
                 n = n.getLeft();
                 search(target, n);
             }

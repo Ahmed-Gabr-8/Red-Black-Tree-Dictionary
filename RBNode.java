@@ -5,7 +5,7 @@ import java.awt.Point;
 class RBNode {
 
     private static RBNode NIL = null;
-    private int key;
+    private String key;
     private boolean red;
     private RBNode left;
     private RBNode right;
@@ -19,7 +19,7 @@ class RBNode {
 
     }
 
-    private static RBNode getNil() {
+    public static RBNode getNil() {
         if (NIL == null) {
             createNIL();
         }
@@ -31,18 +31,18 @@ class RBNode {
 
     }
 
-    public RBNode(int key) {
+    public RBNode(String key) {
         this.key = key;
         this.red = true;
         this.left = getNil();
         this.right = getNil();
-    }
-
-    public int getKey() {
+    } 
+    
+    public String getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
