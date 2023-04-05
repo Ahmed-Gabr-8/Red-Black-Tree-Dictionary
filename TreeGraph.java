@@ -3,6 +3,7 @@ package red.black.tree.dictionary;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
@@ -72,10 +73,11 @@ public class TreeGraph extends JPanel implements KeyListener {
 
             g.fillOval(n.getGraphPoint().x, n.getGraphPoint().y, nodeSize, nodeSize);
             g.setColor(Color.WHITE);
-            String nodeText = String.valueOf(n.getKey());
+            String nodeText = String.valueOf(n.getKey());            
             int textSize = getTextSize(nodeText);
-            Point textPosition = this.getTextCoordinates(textSize, n.getGraphPoint());
-            g.setFont(new Font("Arial", Font.BOLD, textSize));
+            Font textFont =  new Font("Arial", Font.BOLD, textSize);
+            Point textPosition = this.getTextCoordinates(g.getFontMetrics(textFont), nodeText, n.getGraphPoint());
+            g.setFont(textFont);
             g.drawString(nodeText, textPosition.x, textPosition.y);
 
         }
@@ -94,14 +96,14 @@ public class TreeGraph extends JPanel implements KeyListener {
 
     }
 
-    private Point getTextCoordinates(int textSize, Point nodePosition) {
+    private Point getTextCoordinates(FontMetrics fontMetrics, String text, Point nodePosition) {
         //return new Point(nodePosition.x + nodeSize / 3, nodePosition.y + 3 * nodeSize / 4);
-        return new Point(nodePosition.x, nodePosition.y + nodeSize/2  + textSize/2);
+        return new Point(nodePosition.x + nodeSize/2 - fontMetrics.stringWidth(text)/2, nodePosition.y + nodeSize/2  + fontMetrics.getHeight()/2);
     }
 
     private int getTextSize(String text) {
 //        return nodeSize / 2;
-        return nodeSize/text.length();
+        return Math.min(nodeSize/2,  nodeSize/text.length());
 
     }
 
@@ -135,32 +137,32 @@ public class TreeGraph extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();        
-        int translateSpeed = nodeSize/2;
+        int translateSpeed = nodeSize;
         switch (keyCode) {
-            case KeyEvent.VK_UP:
-                this.offset.translate(0, -translateSpeed);
+            case KeyEvent.VK_UP -> {
+                this.offset.translate(0, -translateSpeed);                
                 this.updateGraph();
-                break;
-            case KeyEvent.VK_DOWN:
+            }
+            case KeyEvent.VK_DOWN -> {
                 this.offset.translate(0, translateSpeed);
                 this.updateGraph();
-                break;
-            case KeyEvent.VK_LEFT:
+            }
+            case KeyEvent.VK_LEFT -> {
                 this.offset.translate(-translateSpeed, 0);
                 this.updateGraph();
-                break;
-            case KeyEvent.VK_RIGHT:
+            }
+            case KeyEvent.VK_RIGHT -> {
                 this.offset.translate(translateSpeed, 0);
                 this.updateGraph();
-                break;                
-            case 61:
+            }
+            case KeyEvent.VK_0 -> {
                 this.nodeSize +=1;
                 this.updateGraph();
-                break;
-            case KeyEvent.VK_MINUS:
-                this.nodeSize -=1;
-                this.updateGraph();                
-                break;
+            }
+            case KeyEvent.VK_MINUS -> {
+                this.nodeSize = Math.max(this.nodeSize-1, 0);
+                this.updateGraph();
+            }
              
         }
         

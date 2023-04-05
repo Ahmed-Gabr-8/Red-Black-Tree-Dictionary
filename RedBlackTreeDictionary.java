@@ -21,9 +21,9 @@ public class RedBlackTreeDictionary {
 
         tree.insert(1);
         tree.insert(2);
-        tree.insert(3);
-        tree.insert(4);
-        tree.insert(5);
+        tree.insert(333);
+        tree.insert(4444);
+        tree.insert(55555);
         tree.insert(6666666);
         tree.insert(7);
         tree.insert(8);
