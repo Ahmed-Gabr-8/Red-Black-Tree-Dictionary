@@ -73,8 +73,9 @@ public class TreeGraph extends JPanel implements KeyListener {
             g.fillOval(n.getGraphPoint().x, n.getGraphPoint().y, nodeSize, nodeSize);
             g.setColor(Color.WHITE);
             String nodeText = String.valueOf(n.getKey());
-            Point textPosition = this.getTextCoordinates(nodeText, n.getGraphPoint());
-            g.setFont(new Font("Arial", Font.BOLD, this.getTextSize(nodeText)));
+            int textSize = getTextSize(nodeText);
+            Point textPosition = this.getTextCoordinates(textSize, n.getGraphPoint());
+            g.setFont(new Font("Arial", Font.BOLD, textSize));
             g.drawString(nodeText, textPosition.x, textPosition.y);
 
         }
@@ -93,12 +94,14 @@ public class TreeGraph extends JPanel implements KeyListener {
 
     }
 
-    private Point getTextCoordinates(String text, Point nodePosition) {
-        return new Point(nodePosition.x + nodeSize / 3, nodePosition.y + 3 * nodeSize / 4);
+    private Point getTextCoordinates(int textSize, Point nodePosition) {
+        //return new Point(nodePosition.x + nodeSize / 3, nodePosition.y + 3 * nodeSize / 4);
+        return new Point(nodePosition.x, nodePosition.y + nodeSize/2  + textSize/2);
     }
 
     private int getTextSize(String text) {
-        return nodeSize / 2;
+//        return nodeSize / 2;
+        return nodeSize/text.length();
 
     }
 
