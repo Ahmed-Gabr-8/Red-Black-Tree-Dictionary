@@ -1,6 +1,5 @@
 package red.black.tree.dictionary;
 
-
 public class RedBlackTreeDictionary {
 
     public static void main(String[] args)  {
@@ -31,6 +30,7 @@ public class RedBlackTreeDictionary {
 //        tree.search("Gaboro", tree.getRoot());
 //        tree.search("Gabo", tree.getRoot());
         
+
         tree.display();
 
     }

@@ -20,6 +20,7 @@ public class RBTree {
         root.makeBlack();
     }
 
+
     public void load(String fileName) {
         try {
             File file = new File(fileName);
@@ -84,6 +85,7 @@ public class RBTree {
         leftChild.setRight(n);
         n.setParent(leftChild);
     }
+
 
     public void insertFixUp(RBNode newNode) {
         if (newNode == root) {
@@ -157,7 +159,12 @@ public class RBTree {
     }
 
     public void insert(String key) {
+
         RBNode newNode = new RBNode(key);
+        if (this.root == null) {
+            this.root = newNode;
+            this.root.makeBlack();
+        }
         RBNode prevParent = this.root;
         RBNode currentParent = this.root;
 
@@ -184,11 +191,14 @@ public class RBTree {
 
         }
 
+
         if (newNode.getKey().compareToIgnoreCase(prevParent.getKey()) > 0) {
+
             prevParent.setRight(newNode);
         } else {
             prevParent.setLeft(newNode);
         }
+
 
         newNode.setParent(prevParent);
         insertFixUp(newNode);
@@ -210,6 +220,7 @@ public class RBTree {
         } else {
             JOptionPane.showMessageDialog(null, "Not Found");
         }
+
     }
 
     public RBNode getRoot() {
@@ -227,6 +238,7 @@ public class RBTree {
         }
     }
 
+
     public int getCount() {
         if (this.root == null) {
             return 0;
@@ -242,5 +254,6 @@ public class RBTree {
 
         return this.root.getNodeHeight();
     }
+
 
 }

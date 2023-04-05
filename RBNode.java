@@ -11,6 +11,7 @@ class RBNode {
     private RBNode right;
     private RBNode parent;
     private Point graphPoint;
+    private Point graphIndex;
 
     private static void createNIL() {
 
@@ -19,7 +20,9 @@ class RBNode {
 
     }
 
+
     public static RBNode getNil() {
+
         if (NIL == null) {
             createNIL();
         }
@@ -32,6 +35,7 @@ class RBNode {
     }
 
     public RBNode(String key) {
+
         this.key = key;
         this.red = true;
         this.left = getNil();
@@ -97,13 +101,23 @@ class RBNode {
         return this.parent;
     }
 
+
     public Point getGraphPoint() {
         return graphPoint;
     }
 
-    public void setGraphPoint(Point graphPoint) {
-        this.graphPoint = graphPoint;
+    public void setGraphIndex(Point graphIndex, int nodeSize, Point offset) {
+        this.graphIndex = graphIndex;      
+        this.updateGraphPoint(nodeSize, offset);
     }
+
+    
+    
+    public void updateGraphPoint(int nodeSize, Point offset){
+        this.graphPoint = new Point(graphIndex.x*nodeSize+offset.x, graphIndex.y*nodeSize + offset.y);
+    
+    }
+
 
     public void addToGraph(TreeGraph graph, int upperHeight) {
         if (this.isNIL()) {
@@ -118,6 +132,7 @@ class RBNode {
         graph.addEdge(this, this.left);
 
     }
+
 
     public int getNodeCount() {
         if (this.isNIL()) {
@@ -134,5 +149,6 @@ class RBNode {
 
         return 1 + Math.max(this.right.getNodeHeight(), this.left.getNodeHeight());
     }
+
 
 }
