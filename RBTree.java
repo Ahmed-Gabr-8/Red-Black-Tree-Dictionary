@@ -1,13 +1,16 @@
 package red.black.tree.dictionary;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class RBTree {
 
     private RBNode root;
-    
-    public RBTree(){
-        this.root = RBNode.getNil();        
+
+    public RBTree() {
+        this.root = RBNode.getNil();
     }
 
     public RBTree(String root_key) {
@@ -15,6 +18,23 @@ public class RBTree {
         //to make the root's parent NIL.
         this.root.setParent(RBNode.getNil());
         root.makeBlack();
+    }
+
+    public void load(String fileName) {
+        try {
+            File file = new File(fileName);
+            Scanner scan = new Scanner(file);
+            
+            while (scan.hasNextLine()) {
+                String line = scan.nextLine();
+                this.insert(line);
+                
+                
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error: File Not Found");
+        }
+
     }
 
     public void leftRotate(RBNode n) {
@@ -64,43 +84,40 @@ public class RBTree {
         leftChild.setRight(n);
         n.setParent(leftChild);
     }
-    
-    public void insertFixUp(RBNode newNode)
-    {
-        if(newNode == root)
+
+    public void insertFixUp(RBNode newNode) {
+        if (newNode == root) {
             return;
-        
+        }
+
         RBNode parent = newNode.getParent();
         RBNode grandParent = parent.getParent();
         RBNode uncle;
 
-        if(parent.isRed())
-        {
-            
-            
-            if(grandParent.getLeft() == parent)
+        if (parent.isRed()) {
+
+            if (grandParent.getLeft() == parent) {
                 uncle = grandParent.getRight();
-            else
+            } else {
                 uncle = grandParent.getLeft();
-            
-            if(uncle.isRed())
-            {
+            }
+
+            if (uncle.isRed()) {
                 uncle.switchColor();
                 parent.switchColor();
-                if(grandParent != root)
+                if (grandParent != root) {
                     grandParent.switchColor();
-                else
+                } else {
                     grandParent.makeBlack();
+                }
                 //this.display();
                 System.out.println("Case 1: Uncle Red.");
                 insertFixUp(grandParent);
-                
-            }
-            else
-            {
-                
+
+            } else {
+
                 //right left.
-                if(grandParent.getRight().getLeft() == newNode){
+                if (grandParent.getRight().getLeft() == newNode) {
                     this.rightRotate(parent);
                     insertFixUp(parent);
 //                    this.leftRotate(grandParent);
@@ -108,59 +125,48 @@ public class RBTree {
 //                    parent.switchColor();
                     System.out.println("Case 2: right left");
                     // also instead of leftRotate we could call insertFixUp(parent);
-                }
-                //right right.
-                else if(grandParent.getRight().getRight() == newNode){
+                } //right right.
+                else if (grandParent.getRight().getRight() == newNode) {
                     this.leftRotate(grandParent);
                     grandParent.switchColor();
                     parent.switchColor();
-                    
+
                     System.out.println("Case 3: right right.");
                     //check for root and color it.
-                }
-                
-                
-                    
-                //left right
-                else if(grandParent.getLeft().getRight() == newNode){
-                        this.leftRotate(parent);
-                        insertFixUp(parent);
+                } //left right
+                else if (grandParent.getLeft().getRight() == newNode) {
+                    this.leftRotate(parent);
+                    insertFixUp(parent);
 //                        this.rightRotate(grandParent);
 //                        grandParent.switchColor();
 //                        parent.switchColor();
-                        System.out.println("Case 2: left right.");
-                }
-                    
-                //left left    
-                else{
+                    System.out.println("Case 2: left right.");
+                } //left left    
+                else {
                     this.rightRotate(grandParent);
                     grandParent.switchColor();
                     parent.switchColor();
-                    
+
                     System.out.println("Case 3: left left.");
                 }
-                
-                }
-                
-                
+
             }
-        
-        
-        
+
+        }
+
     }
-    
+
     public void insert(String key) {
         RBNode newNode = new RBNode(key);
         RBNode prevParent = this.root;
         RBNode currentParent = this.root;
-        
-        if(prevParent.isNIL()){
+
+        if (prevParent.isNIL()) {
             this.root = newNode;
             newNode.setParent(RBNode.getNil());
             newNode.makeBlack();
             return;
         }
-        
 
         while (!currentParent.isNIL()) {
             if (newNode.getKey().compareToIgnoreCase(currentParent.getKey()) > 0) {
@@ -189,26 +195,20 @@ public class RBTree {
         System.out.println("key = " + key);
     }
 
-    public void search (String target, RBNode n)
-    {
-        if ( n.getKey() != null) {
+    public void search(String target, RBNode n) {
+        if (n.getKey() != null) {
             if (target.equalsIgnoreCase(n.getKey())) {
-                JOptionPane.showMessageDialog(null,"Found");
+                JOptionPane.showMessageDialog(null, "Found");
                 return;
-            }
-            else if (target.compareToIgnoreCase(n.getKey()) < 0) {
+            } else if (target.compareToIgnoreCase(n.getKey()) < 0) {
                 n = n.getLeft();
                 search(target, n);
+            } else {
+                n = n.getRight();
+                search(target, n);
             }
-            else {
-                    n = n.getRight();
-                    search(target, n);
-                }
-        }
-
-        else
-        {
-            JOptionPane.showMessageDialog(null,"Not Found");
+        } else {
+            JOptionPane.showMessageDialog(null, "Not Found");
         }
     }
 
@@ -234,14 +234,13 @@ public class RBTree {
         return this.root.getNodeCount();
 
     }
-    
-    
-    public int getHeight(){
-        if(this.root == null){
+
+    public int getHeight() {
+        if (this.root == null) {
             return -1;
         }
-        
+
         return this.root.getNodeHeight();
     }
-    
-    }
+
+}

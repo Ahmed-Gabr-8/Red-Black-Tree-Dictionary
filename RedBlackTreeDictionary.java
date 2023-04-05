@@ -16,19 +16,20 @@ public class RedBlackTreeDictionary {
 //        tree.insert("97");
 
         RBTree tree =  new RBTree();
-        tree.insert("Ali");
-        tree.insert("Ahmed");
-        tree.insert("Gabor");
-        tree.insert("Nour");
-        tree.insert("Mohamed Emad");
-        tree.insert("kiro");
-        tree.insert("Ahmed");
-        
-
-        
-        tree.search("gabor", tree.getRoot());
-        tree.search("Gaboro", tree.getRoot());
-        tree.search("Gabo", tree.getRoot());
+        tree.load("testdict.txt");
+//        tree.insert("Ali");
+//        tree.insert("Ahmed");
+//        tree.insert("Gabor");
+//        tree.insert("Nour");
+//        tree.insert("Mohamed Emad");
+//        tree.insert("kiro");
+//        tree.insert("Ahmed");
+//        
+//
+//        
+//        tree.search("gabor", tree.getRoot());
+//        tree.search("Gaboro", tree.getRoot());
+//        tree.search("Gabo", tree.getRoot());
         
         tree.display();
 
