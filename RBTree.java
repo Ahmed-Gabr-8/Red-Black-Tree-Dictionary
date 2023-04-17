@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 public class RBTree {
 
     private RBNode root;
+    private TreeGraph graph;
 
     public RBTree() {
         this.root = RBNode.getNil();
@@ -20,17 +21,15 @@ public class RBTree {
         root.makeBlack();
     }
 
-
     public void load(String fileName) {
         try {
             File file = new File(fileName);
             Scanner scan = new Scanner(file);
-            
+
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
                 this.insert(line);
-                
-                
+
             }
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Error: File Not Found");
@@ -85,7 +84,6 @@ public class RBTree {
         leftChild.setRight(n);
         n.setParent(leftChild);
     }
-
 
     public void insertFixUp(RBNode newNode) {
         if (newNode == root) {
@@ -191,7 +189,6 @@ public class RBTree {
 
         }
 
-
         if (newNode.getKey().compareToIgnoreCase(prevParent.getKey()) > 0) {
 
             prevParent.setRight(newNode);
@@ -199,10 +196,12 @@ public class RBTree {
             prevParent.setLeft(newNode);
         }
 
-
         newNode.setParent(prevParent);
-        insertFixUp(newNode);
-        //System.out.println("key = " + key);
+        insertFixUp(newNode);        
+        if (this.graph != null) {
+            traverseTreeForGraph();
+            graph.centerAroundNode(newNode);           
+        }
     }
 
     public void search(String target, RBNode n) {
@@ -223,21 +222,53 @@ public class RBTree {
 
     }
 
+    public void graphicalSearch(String target, RBNode n) {
+        if (this.graph == null) {
+            return;
+        }
+        if (n.getKey() != null) {
+
+            this.graph.centerAroundNode(n);            
+            waitSleep(500);
+
+            if (target.equalsIgnoreCase(n.getKey())) {
+                JOptionPane.showMessageDialog(null, "Found");
+
+            } else if (target.compareToIgnoreCase(n.getKey()) < 0) {
+                n = n.getLeft();
+                graphicalSearch(target, n);
+            } else {
+                n = n.getRight();
+                graphicalSearch(target, n);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Not Found");
+        }
+
+    }
+
     public RBNode getRoot() {
         return root;
     }
 
     public void display() {
-        TreeGraph graph = new TreeGraph(this.getCount(), this.getHeight());
-        this.root.addToGraph(graph, 0);
-        TreeGraph.showTree(graph);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            System.out.println("Interruped Exception occured.");
+        if (this.graph == null) {
+            this.graph = new TreeGraph();
         }
+
+        traverseTreeForGraph();
+        this.graph.centerAroundNode(this.root);
+        this.graph.showGraph();
+
     }
 
+    private void traverseTreeForGraph() {
+        if (this.graph == null) {
+            return;
+        }
+        this.root.addToGraph(this.graph, 0);
+
+    }
 
     public int getCount() {
         if (this.root == null) {
@@ -255,5 +286,14 @@ public class RBTree {
         return this.root.getNodeHeight();
     }
 
+    private void waitSleep(int millis) {
+
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            System.out.println("Interruped Exception occured.");
+        }
+
+    }
 
 }
