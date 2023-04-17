@@ -21,6 +21,11 @@ public class RBTree {
     }
 
 
+    private static boolean validateBlank(String s)
+    {
+        return s.isBlank();
+    }
+    
     public void load(String fileName) {
         try {
             File file = new File(fileName);
@@ -28,12 +33,17 @@ public class RBTree {
             
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                this.insert(line);
+                if(RBTree.validateBlank(line)){
+                    JOptionPane.showMessageDialog(RedBlackTreeDictionary.tempFrame, "There is an empty string.");
+                    continue;
+                }
+                else
+                    this.insert(line);
                 
                 
             }
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error: File Not Found");
+            JOptionPane.showMessageDialog(RedBlackTreeDictionary.tempFrame, "Error: File Not Found");
         }
 
     }
@@ -184,7 +194,8 @@ public class RBTree {
                 currentParent = currentParent.getLeft();
 
             } else {
-                JOptionPane.showMessageDialog(null, "ERROR: Word already in the dictionary!");
+                
+                JOptionPane.showMessageDialog(RedBlackTreeDictionary.tempFrame, "ERROR: Word already in the dictionary!");
                 return;
 
             }

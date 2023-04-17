@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Line2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 public class TreeGraph extends JPanel implements KeyListener {
 
@@ -34,8 +35,13 @@ public class TreeGraph extends JPanel implements KeyListener {
 
     public TreeGraph(int nodeCount, int treeHeight) {
         this();
+        try{
         this.nodeSize = Math.max(1, Math.min(WINDOW_WIDTH / nodeCount, WINDOW_HEIGHT / (2 * (treeHeight + 1))));
-
+        }
+        catch(ArithmeticException e)
+        {
+            JOptionPane.showMessageDialog(null, "Error: Empty File is not allowed");
+        }
     }
 
     public void addNode(RBNode node, int upperHeight) {
@@ -110,6 +116,7 @@ public class TreeGraph extends JPanel implements KeyListener {
 
     private int getTextSize(String text) {
 //        return nodeSize / 2;
+        
         return Math.min(nodeSize / 2, nodeSize / text.length());
 
     }
@@ -163,7 +170,7 @@ public class TreeGraph extends JPanel implements KeyListener {
                 this.offset.translate(-translateSpeed, 0);
                 this.updateGraph();
             }
-            case KeyEvent.VK_0 -> {               
+            case KeyEvent.VK_EQUALS -> {               
                 double scaleKeyX = ((1.0 / nodeSize) * (WINDOW_WIDTH / 2 - nodeSize / 2 - offset.x) + 0.5) * scaleSpeed;
                 double scaleKeyY = ((1.0 / nodeSize) * (WINDOW_HEIGHT / 2 - nodeSize / 2 - offset.y) + 0.5) * scaleSpeed;
                 this.offset.translate((int) -scaleKeyX, (int) -scaleKeyY);
