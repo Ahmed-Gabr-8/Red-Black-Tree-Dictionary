@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Line2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 
 public class TreeGraph extends JPanel implements KeyListener {
 
@@ -65,11 +66,10 @@ public class TreeGraph extends JPanel implements KeyListener {
         g2d.setStroke(new BasicStroke(edgeThickness));
         for (Edge e : edges) {
 
-            if(!e.checkBounds()){
-                continue;
+            Line2D line = e.getLine();
+            if (line.intersects(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)) {
+                g2d.draw(e.getLine());
             }
-
-            g2d.draw(e.getLine());
         }
 
         for (RBNode n : nodes) {
@@ -135,22 +135,6 @@ public class TreeGraph extends JPanel implements KeyListener {
 
         public boolean between(int x, int min, int max) {
             return x >= min && x <= max;
-        }
-
-        public boolean checkBounds() {
-            int x1 = node1.getGraphPoint().x + nodeSize / 2;
-            int x2 = node2.getGraphPoint().x + nodeSize / 2;
-            int y1 = node1.getGraphPoint().y + nodeSize / 2;
-            int y2 = node2.getGraphPoint().y + nodeSize / 2;
-
-            if (between(x1, 0, WINDOW_WIDTH) && between(y1, 0, WINDOW_HEIGHT)) {
-                return true;
-            }
-
-            if (between(x2, 0, WINDOW_WIDTH) && between(y2, 0, WINDOW_HEIGHT)) {
-                return true;
-            }
-            return false;
         }
 
         public Line2D getLine() {

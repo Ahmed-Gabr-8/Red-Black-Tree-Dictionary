@@ -144,7 +144,8 @@ class RBNode {
 
     public int getNodeHeight() {
         if (this.isNIL()) {
-            return -1;
+            return 0;
+            //return -1;
         }
 
         return 1 + Math.max(this.right.getNodeHeight(), this.left.getNodeHeight());
